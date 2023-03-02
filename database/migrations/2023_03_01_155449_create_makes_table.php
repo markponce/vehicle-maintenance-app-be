@@ -11,9 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Make
+        // name
+        // slug
+        // user_id
+        // deleted_at
+        // created_at
+        // updated_at
+
         Schema::create('makes', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
+            $table->string('name')->unique();
+            $table->foreignId('user_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
