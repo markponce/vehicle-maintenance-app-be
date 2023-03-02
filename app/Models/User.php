@@ -41,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get user makes/brands (eg. Yamaha, Kawasaki, etc)
+     */
+    public function makes()
+    {
+        return $this->hasMany(Make::class);
+    }
 }
