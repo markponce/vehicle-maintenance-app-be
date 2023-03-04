@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMakeRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateMakeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return $this->make->user_id == $this->user()->id;
     }
 
     /**
@@ -22,7 +23,10 @@ class UpdateMakeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                Rule::unique('makes')->ignore($this->make->id)->where(fn ($query) => $query->where('user_id', $this->user()->id)->first())
+            ]
         ];
     }
 }
