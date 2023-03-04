@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+// use Illuminate\Database\Eloquent\Builder;
 
 class StoreMakeRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class StoreMakeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,10 @@ class StoreMakeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                Rule::unique('makes')->where(fn ($query) => $query->where('user_id', $this->user()->id)->first())
+            ]
         ];
     }
 }
