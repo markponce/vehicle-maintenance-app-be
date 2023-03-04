@@ -12,7 +12,17 @@ class Make extends Model
     use SoftDeletes;
 
     /**
-     * Get the poßst that owns the comment.
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        'user_id',
+    ];
+
+    /**
+     * Get the user that owns the make.
      */
     public function user()
     {
