@@ -21,13 +21,14 @@ return new class extends Migration
 
         Schema::create('makes', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->foreignId('user_id')
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
+            $table->index(['name', 'user_id']);
         });
     }
 
