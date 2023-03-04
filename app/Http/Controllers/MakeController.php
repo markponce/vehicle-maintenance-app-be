@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeleteMakeRequest;
 use App\Http\Requests\StoreMakeRequest;
 use App\Http\Requests\UpdateMakeRequest;
+use App\Http\Resources\MakeCollection;
+use App\Http\Resources\MakeResource;
 use App\Models\Make;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MakeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $make = Make::where('user_id', $request->user()->id)
+            ->paginate();
+        return  new MakeCollection($make);
     }
 
     /**
@@ -29,23 +28,30 @@ class MakeController extends Controller
      */
     public function store(StoreMakeRequest $request)
     {
-        //
+        $validated = $request->safe()->only(['name']);
+        $make = new Make($validated);
+        $request->user()->makes()->save($make);
+        return (new MakeResource(Make::with('user')->where('id', $make->id)->first()))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
+     * 
      * Display the specified resource.
+     *
+     * @param  Illuminate\Http\Request $request
+     * @param  App\Models\Make $make
+     * 
+     * @return App\Http\Resources\MakeResource
+     * 
      */
-    public function show(Make $make)
+    public function show(Request $request, Make $make)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Make $make)
-    {
-        //
+        $make = Make::where('id', $make->id)
+            ->where('user_id', $request->user()->id)
+            ->firstOrFail();
+        return  new MakeResource($make);
     }
 
     /**
@@ -53,14 +59,20 @@ class MakeController extends Controller
      */
     public function update(UpdateMakeRequest $request, Make $make)
     {
-        //
+        $validated = $request->safe()->only(['name']);
+        $make->update($validated);
+        return new MakeResource(Make::with('user')->where('id', $make->id)->first());
     }
-
+    
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Make $make)
+    public function destroy(DeleteMakeRequest $request, Make $make)
     {
-        //
+        if ($make->delete()) {
+            return response('', Response::HTTP_NO_CONTENT);
+        }
+
+        return response('', Response::HTTP_CONFLICT);
     }
 }
