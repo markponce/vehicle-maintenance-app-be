@@ -22,6 +22,16 @@ class Make extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
+    /**
      * Get the user that owns the make.
      */
     public function user()
