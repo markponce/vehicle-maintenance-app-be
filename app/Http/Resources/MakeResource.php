@@ -15,9 +15,12 @@ class MakeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'user_id' => $this->user_id,
             'user' => new UserResource($this->whenLoaded('user')),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
