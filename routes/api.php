@@ -44,7 +44,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // return new UserResource(User::with(['makes'])->where('id', $request->user()->id)->first());
     });
 
-    Route::prefix('make')->group(function () {
+    Route::prefix('makes')->group(function () {
         Route::get('/', [MakeController::class, 'index']);
         Route::get('/{make}', [MakeController::class, 'show']);
         Route::put('/{make}', [MakeController::class, 'update']);
