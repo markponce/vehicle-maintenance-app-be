@@ -18,8 +18,8 @@ class MakeController extends Controller
      */
     public function index(Request $request)
     {
-        $make = Make::where('user_id', $request->user()->id)
-            ->paginate();
+        $make = Make::where('user_id', $request->user()->id)->orderBy('created_at', 'asc')
+            ->get();
         return  new MakeCollection($make);
     }
 
@@ -63,7 +63,7 @@ class MakeController extends Controller
         $make->update($validated);
         return new MakeResource(Make::with('user')->where('id', $make->id)->first());
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */
