@@ -13,7 +13,7 @@ class MakePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user ? true : false;
     }
 
     /**
@@ -21,7 +21,7 @@ class MakePolicy
      */
     public function view(User $user, Make $make): bool
     {
-        //
+        return $user->id === $make->user_id;
     }
 
     /**
@@ -29,7 +29,7 @@ class MakePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user ? true : false;;
     }
 
     /**
@@ -37,7 +37,7 @@ class MakePolicy
      */
     public function update(User $user, Make $make): bool
     {
-        //
+        return $user->id === $make->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class MakePolicy
      */
     public function delete(User $user, Make $make): bool
     {
-        //
+        return $user->id === $make->user_id;
     }
 
     /**
@@ -53,7 +53,7 @@ class MakePolicy
      */
     public function restore(User $user, Make $make): bool
     {
-        //
+        return $user->id === $make->user_id;
     }
 
     /**
@@ -61,6 +61,6 @@ class MakePolicy
      */
     public function forceDelete(User $user, Make $make): bool
     {
-        //
+        return $user->id === $make->user_id;
     }
 }

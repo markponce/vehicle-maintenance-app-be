@@ -13,6 +13,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MakeController extends Controller
 {
+    public function __construct()
+    {
+        // Implement MakePolicy
+        $this->authorizeResource(Make::class);
+    }
+
     /**
      * Display a listing of the resource.
      */
