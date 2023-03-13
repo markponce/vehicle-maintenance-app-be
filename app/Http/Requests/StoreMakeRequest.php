@@ -26,7 +26,7 @@ class StoreMakeRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::unique('makes')->where(fn ($query) => $query->where('user_id', $this->user()->id)->first())
+                Rule::unique('makes')->where(fn ($query) => $query->where('user_id', $this->user()->id)->whereNull('deleted_at')->first())
             ]
         ];
     }
