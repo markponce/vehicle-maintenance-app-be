@@ -24,8 +24,13 @@ class MakeController extends Controller
      */
     public function index(Request $request)
     {
-        $make = Make::where('user_id', $request->user()->id)->orderBy('created_at', 'asc')
-            ->get();
+        $make = Make::where('user_id', $request->user()->id)->orderBy('created_at', 'desc');
+        if ($request->input('perPage') || $request->input('page')) {
+            $make = $make->paginate($request->input('perPage') ?? 10);
+            // $make->withPath('')->appends(['sort' => 'votes'])->links();
+        } else {
+            $make = $make->get();
+        }
         return  new MakeCollection($make);
     }
 
